@@ -81,7 +81,8 @@ public class ChatController {
                 .map(m -> new SessionMeta(
                         m.sessionId(),
                         m.preview(),
-                        m.updatedAt().toString()))
+                        m.updatedAt().toString(),
+                        sessionStore.listTeammates(m.sessionId()).size()))
                 .collect(Collectors.toList());
     }
 

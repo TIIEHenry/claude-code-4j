@@ -243,12 +243,27 @@ body {
   letter-spacing: -0.13px;
 }
 .session-item.active .si-title { color: var(--accent); font-weight: 510; }
+.si-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
+}
 .si-time {
   font-size: 11px;
   color: var(--t4);
-  margin-top: 1px;
   font-feature-settings: var(--feat);
 }
+.si-agents {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.7;
+  font-feature-settings: var(--feat);
+}
+.si-agents svg { width: 10px; height: 10px; flex-shrink: 0; }
 
 /* ── Main ── */
 .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
@@ -1895,9 +1910,23 @@ async function loadSessionList() {
       const item = document.createElement('div');
       item.className = 'session-item' + (s.sessionId === sessionId ? ' active' : '');
       item.dataset.id = s.sessionId;
+      const agentsBadge = s.teammateCount > 0
+        ? `<span class="si-agents">
+             <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5">
+               <circle cx="4.5" cy="3.5" r="1.8"/>
+               <path d="M1 10c0-2 1.5-3 3.5-3s3.5 1 3.5 3"/>
+               <circle cx="8.5" cy="3.5" r="1.8"/>
+               <path d="M6 10c.3-1.5 1.2-2.3 2.5-2.3" stroke-dasharray="1.5 1"/>
+             </svg>
+             ${s.teammateCount} agents
+           </span>`
+        : '';
       item.innerHTML = `
         <div class="si-title">${escHtml(s.preview || '（空会话）')}</div>
-        <div class="si-time">${escHtml(formatRelativeTime(s.updatedAt))}</div>`;
+        <div class="si-meta">
+          <span class="si-time">${escHtml(formatRelativeTime(s.updatedAt))}</span>
+          ${agentsBadge}
+        </div>`;
       item.addEventListener('click', () => switchSession(s.sessionId));
       sessionList.appendChild(item);
     }
