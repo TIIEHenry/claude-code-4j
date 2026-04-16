@@ -1,7 +1,193 @@
-# Changelog — claude-code-4j
+# Changelog — claude-code-java
 
 每个版本对应一次对话迭代，记录用户需求和实际改动。
 Each version corresponds to one conversation iteration.
+
+---
+
+## v0.20 — 2026-04-16
+
+### 需求
+> Playground 改为完整网站结构：首页（学习指南）→ API 文档 → Playground，三段式全局菜单
+
+### 变更
+
+#### `PageController.java`（start/controller，新建）
+- `GET /`          → 读取 `docs/study/index.html` 直接返回（URL 保持 `/`，修改 HTML 后刷新即生效）
+- `GET /api`       → 读取 `docs/study/api.html`
+- `GET /playground`→ 读取 classpath `static/playground.html`
+
+#### `static/index.html` → `static/playground.html`（git mv 重命名）
+- Playground 页面移至 `/playground`，不再占用根路径
+
+#### `static/playground.html`（topbar）
+- `.tb-doc-links` → 替换为 `.tb-nav` + `.tb-nav-link`
+- 三个导航项：**首页**（`/`）、**API 文档**（`/api`）、**Playground**（`/playground`，active 高亮）
+
+#### `docs/study/index.html`（nav）
+- 新增 `nav-active`（首页高亮）和 `nav-playground`（带边框按钮样式）CSS
+- nav 链接更新：首页 `→ /`、API 文档 `→ /api`、Playground `→ /playground`（新增）
+- Hero 按钮新增 "Playground →" 入口
+
+#### `docs/study/api.html`（topbar）
+- 导航改为：首页（`/`）、API 文档（`/api`，active）、各锚点、Playground 按钮（`/playground`）
+
+#### `WebConfig.java`
+- 移除 `/study/**` 静态资源映射（已被 PageController 直接读文件替代）
+
+---
+
+## v0.19 — 2026-04-16
+
+### 需求
+> Web Playground 顶栏应有引导链接，可直接跳转到学习指南和 API 文档页面
+
+### 变更
+
+#### `index.html` CSS + HTML（topbar）
+- 新增 `.tb-doc-links`：链接组容器，`margin-left: auto` 将其推到右侧
+- 新增 `.tb-doc-link`：单个链接样式（hover 背景 + 文字浅色图标，Linear 风格）
+- topbar 新增两个链接（在 `tb-right` 左侧，以 `tb-sep` 分隔）：
+  - **学习指南** → `/study/index.html`（新 Tab 打开）
+  - **API 文档** → `/study/api.html`（新 Tab 打开）
+
+#### `WebConfig.java`（start/config，新建）
+- 实现 `WebMvcConfigurer.addResourceHandlers()`
+- 将 `{workdir}/docs/study/` 映射到 `/study/**`，Spring Boot 静态资源服务直接暴露 docs/study/ 目录
+
+---
+
+## v0.18 — 2026-04-16
+
+### 需求
+> CLAUDE.md 作为 SDD 规范文件，凡是涉及 plan、brainstorm、spec、design 的内容，应在 docs 目录下沉淀为 wiki 文档
+
+### 变更
+
+#### `CLAUDE.md`（开发规范）
+- 新增 **Wiki 沉淀** 章节（置于 Changelog 维护之前）
+- 触发规则：plan / brainstorm / spec / design 类内容必须保存为 `docs/` 下的 Markdown 文件
+- 文件命名规范：`docs/{type}-{topic}.md`（type = plan / spec / design / adr）
+- 文件内容模板：背景 / 目标 / 方案 / 关键约束 / 待定项五节
+- `docs/` 目录结构约定：各类文档的子目录/前缀规则
+
+---
+
+## v0.17 — 2026-04-16
+
+### 需求
+> study 中的几个 html 文件整体重构，搞得有点科技感；要把整个项目的全部能力都放进去教学，要有可动的图；包括 claude code 的消息时序图、架构图，以及这个项目的架构图
+
+### 变更
+
+#### `docs/study/index.html`（完整重构）
+- **视觉风格**：全面切换科幻/深蓝风格（bg `#050d1a`，cyan `#00d4ff`，purple `#9d71ff`，green `#4afa7a`）
+- **Hero**：Canvas 粒子网络背景（节点 + 连线，呼吸动画）
+- **AgentLoop 核心循环**：动态代码块，`setInterval` 循环高亮关键行
+- **12 步 Canvas 时序图**：4 个角色（用户/浏览器、AgentLoop、LLM API、工具/文件系统），自动逐步播放（1.4s/步），支持重播/暂停
+- **5 层交互架构图**：点击展开详情面板（START / AGENT / CAPABILITY / TOOL / CORE 各层描述和子组件列表）
+- **Agent Teams 9 步 Canvas 时序图**：含 TeammateLoop 自循环箭头
+- **Context Compression 动效**：3 个面板（Layer 1/2/3）分别以不同节奏闪烁动画
+- **SSE 终端**：打字效果逐条展示 14 种 SSE 事件，颜色按类型区分
+- **10 个能力卡片**：hover 发光 + 上浮效果
+- **Web Playground 特性**：6 张特性卡
+- **快速上手**：Web / CLI / API 三 Tab 切换
+
+#### `docs/study/api.html`（完整重构）
+- **视觉风格**：与 index.html 一致的科幻深蓝设计系统
+- **Hero**：网格背景 + 径向光晕，4 个统计卡（8 端点 / 14 事件 / ∞ 多轮 / 3 压缩层）
+- **SSE 事件流实时演示**：仿终端窗口，15 个事件依次播放（含思考/工具/Teammate/压缩/done），支持重播/暂停
+- **14 种 SSE 事件类型完整表**：分组（会话标识/思考/文字/工具/Teammate/压缩/完成），含 Payload 字段说明
+- **端点卡片可折叠**：POST /api/chat、DELETE /api/sessions/{id}、POST /api/chat/stream、GET /api/sessions、GET /api/sessions/{id}/messages、GET /api/sessions/{id}/teammates、GET /api/transcripts/{filename}
+- **会话生命周期图**：5 节点横向流程（首次请求→继续对话→压缩→Agent Teams→清除），含文件路径注释
+- **配置参考表**：5 个配置项含默认值、必填标注、`claude.properties` 示例和命令行覆盖示例
+- **JS 客户端接收示例**：fetch + ReadableStream 手动解析 event:/data: 行的完整代码
+
+---
+
+## v0.16 — 2026-04-16
+
+### 需求
+> 修改 CLAUDE.md，补全缺失内容；每次改动都要放到 changelog 中
+
+### 变更
+
+#### `CLAUDE.md`
+- **项目概述**：加入 Web Playground 作为第三种交互方式
+- **构建与运行**：Web Playground 模式作为推荐启动方式，排在最前
+- **start 包结构**：完整补全 `StreamController`、`StreamService`、`SessionMeta`（含 `teammateCount`）；`ChatController` 展示所有端点；`index.html` 和 `claude.properties` 显式列出
+- **核心设计模式**：新增 `AgentEventListener` 详解；补充 `TeammateLoop` 实时 `saveSession()`；`SessionStore` 命名约定；`ContextCompactor` 三层压缩及 `_transcript_file` 链式追溯
+- **REST API**：同步/SSE/会话历史三组接口完整列出，含所有 SSE 事件类型表
+- **新增 Web Playground 章节**：关键 JS 函数表、全局状态说明、无构建步骤说明
+- **开发规范**：Changelog 维护强化为"不可跳过"；新增 Git 提交规范（禁止 Co-Authored-By Claude，指定提交命令）；新增扩展 SSE 事件三层管道说明
+
+---
+
+## v0.15 — 2026-04-16
+
+### 需求
+> 左侧对话历史中，除时间和概要外，涉及 teammate 的会话显示 agent 图标和数量提示
+
+### 变更
+
+#### `SessionMeta.java`（start/dto）
+- 新增 `int teammateCount` 字段
+
+#### `ChatController.java`（start/controller）
+- `listSessions()`：对每个 session 调用 `sessionStore.listTeammates(m.sessionId()).size()` 填入 `teammateCount`
+
+#### `index.html` CSS
+- `.si-time` 改为 inline（去掉独占一行）
+- 新增 `.si-meta`：flex 横排，包裹时间和 agents 徽标
+- 新增 `.si-agents`：人物图标 + 数量，accent 色低透明度
+
+#### `index.html` JS
+- `loadSessionList()`：`s.teammateCount > 0` 时渲染 SVG 人物图标 + `N agents` 徽标，嵌入 `.si-meta` 行
+
+---
+
+## v0.14 — 2026-04-16
+
+### 需求
+> 更新所有 md 文件，展示 Web Playground 新能力；描述中突出 harness 实践和 AI coding 实践
+
+### 变更
+
+#### `README.md`
+- 标题/副标题加入 "Web Playground" 作为第三种交互方式
+- 新增 Web Playground ASCII 示意图 + 核心交互特性表格（流式渲染、思考卡片、工具卡片、压缩卡片、Teammate 悬浮条、工作空间抽屉、压缩链导航等）
+- 架构图更新：加入 `StreamService`、`ChatController`（SSE 端点）、`index.html`（Web Playground SPA）
+- 能力表格更新：`ContextCompactor` 补充压缩历史 `.transcripts/` 说明；`TeammateRunner` 补充实时持久化和 Web Playground 可视化说明；`SessionStore` 补充子会话命名约定
+- 新增 **REST API** 章节：同步接口 + SSE 流式接口 + SSE 事件协议完整表格 + 会话与历史接口列表
+- 新增 **Harness 实践** 章节：AgentLoop 模式、ToolProvider 接口、AgentEventListener 事件总线、TeammateRunner 多 Agent 编排、ContextCompactor 三层压缩详解
+- 新增 **AI Coding 实践** 章节：说明项目本身由 Claude Code 全程辅助开发，0 行手写代码，每条 CHANGELOG 对应一轮对话
+- 安全模型补充 Transcript API 路径穿越防护说明
+- 英文部分同步更新所有新章节
+
+#### `CONTRIBUTING.md`
+- 新增 **扩展 SSE 事件** 章节：三层管道（AgentEventListener → StreamService → index.html）+ 完整代码示例
+- 新增 **扩展 Web Playground** 章节：关键函数说明表格（`handleSseEvent`、`appendAiRow`、`openDrawer`、`renderMiniMessages`、`buildTranscriptChain`、`switchSession`、`recordCompact`、`updateTmFloat`）
+
+#### `docs/TESTING.md`
+- 目录加入 Scenario 10
+- 新增 **Scenario 10: Web Playground — 流式 UI 全流程**：SSE 事件流示例、UI 渲染逐项验证、历史恢复验证、多次压缩链验证、结果表格
+- 总体测试结论表格加入 Web Playground 条目；ContextCompactor 条目补充压缩链多层追溯验证
+
+---
+
+## v0.13 — 2026-04-16
+
+### 需求
+> 点击"查看完整历史"时，根据 `_transcript_file` 逐层追溯所有压缩记录，工作空间按压缩顺序展示 Tabs（第1次、第2次…），每个 Tab 内的压缩分隔符可点击跳转到更早的 Tab
+
+### 变更
+
+#### `index.html` JS
+- 新增 `buildTranscriptChain(latestFile)`：从最新 transcript 文件开始，沿 `_transcript_file` 字段链式加载，返回 `[{file, msgs}, ...]`（oldest → newest 排序）
+- 新增 `showChainTab(chain, idx)`：渲染指定层级的 Tab 内容；最新 Tab 顶部展示 compactSessions 的 summary；构造 `onCompactClick` 回调，点击后根据 prevFile 定位并切换到对应 Tab
+- 重写 `renderCompactDrawer()`：调用 `buildTranscriptChain` 构建完整链，自动生成 N 个 Tabs，默认展示最新一次；若无 transcriptFile 则降级展示纯 summary
+- 移除旧的 `loadCompactTabContent()`（由 `showChainTab` 替代）
+- `renderMiniMessages(container, msgs, onCompactClick)`：新增第三个参数；compact 分隔符在有 `onCompactClick` 且 msg 带 `_transcript_file` 时渲染为带箭头的可点击行（`← 查看更早的压缩历史`），hover 有透明度反馈；无 callback 时保持原静态分隔符样式
 
 ---
 
@@ -312,8 +498,8 @@ Each version corresponds to one conversation iteration.
 
 ### 变更
 - 项目初始化（见 commit `feat(init)`）
-- `claude-code-4j-service`：AgentLoop、AgentAssembler、工具体系（FileTools、TodoTool、CompactTool 等）
-- `claude-code-4j-start`：Spring Boot 入口、CLI REPL、REST API (`/api/chat`、`/api/chat/stream`)
+- `claude-code-java-service`：AgentLoop、AgentAssembler、工具体系（FileTools、TodoTool、CompactTool 等）
+- `claude-code-java-start`：Spring Boot 入口、CLI REPL、REST API (`/api/chat`、`/api/chat/stream`)
 - TeammateRunner + TeammateLoop：Agent Teams 支持
 - SessionStore：会话持久化（`.sessions/` 目录）
 - ContextCompactor：三层压缩（microCompact、auto-compact、model-triggered compact）

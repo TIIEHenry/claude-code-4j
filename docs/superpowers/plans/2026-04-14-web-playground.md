@@ -16,28 +16,28 @@
 
 | File | Responsibility |
 |------|---------------|
-| `claude-code-4j-service/src/main/java/ai/claude/code/core/AgentEventListener.java` | Interface: streaming event callbacks for AgentLoop |
-| `claude-code-4j-start/src/main/java/ai/claude/code/web/controller/StreamController.java` | `POST /api/chat/stream` SSE endpoint |
-| `claude-code-4j-start/src/main/java/ai/claude/code/web/service/StreamService.java` | SseAgentEventListener + per-request AgentLoop assembly |
-| `claude-code-4j-start/src/main/java/ai/claude/code/web/dto/SessionMeta.java` | Record: `{sessionId, preview, updatedAt}` |
-| `claude-code-4j-start/src/main/resources/static/index.html` | Single-file frontend (CSS + JS inline) |
+| `claude-code-java-service/src/main/java/ai/claude/code/core/AgentEventListener.java` | Interface: streaming event callbacks for AgentLoop |
+| `claude-code-java-start/src/main/java/ai/claude/code/web/controller/StreamController.java` | `POST /api/chat/stream` SSE endpoint |
+| `claude-code-java-start/src/main/java/ai/claude/code/web/service/StreamService.java` | SseAgentEventListener + per-request AgentLoop assembly |
+| `claude-code-java-start/src/main/java/ai/claude/code/web/dto/SessionMeta.java` | Record: `{sessionId, preview, updatedAt}` |
+| `claude-code-java-start/src/main/resources/static/index.html` | Single-file frontend (CSS + JS inline) |
 
 ### Modified files
 
 | File | Change |
 |------|--------|
-| `claude-code-4j-service/src/main/java/ai/claude/code/core/OpenAiClient.java` | Add `createMessageStream()` |
-| `claude-code-4j-service/src/main/java/ai/claude/code/agent/AgentLoop.java` | Add `run(messages, listener)` overload |
-| `claude-code-4j-service/src/main/java/ai/claude/code/capability/SessionStore.java` | Add `listAll()` method |
-| `claude-code-4j-start/src/main/java/ai/claude/code/web/controller/ChatController.java` | Add `GET /api/sessions` and `GET /api/sessions/{id}/messages` |
-| `claude-code-4j-start/src/main/java/ai/claude/code/config/AgentBeans.java` | Add `ExecutorService` bean for SSE threads |
+| `claude-code-java-service/src/main/java/ai/claude/code/core/OpenAiClient.java` | Add `createMessageStream()` |
+| `claude-code-java-service/src/main/java/ai/claude/code/agent/AgentLoop.java` | Add `run(messages, listener)` overload |
+| `claude-code-java-service/src/main/java/ai/claude/code/capability/SessionStore.java` | Add `listAll()` method |
+| `claude-code-java-start/src/main/java/ai/claude/code/web/controller/ChatController.java` | Add `GET /api/sessions` and `GET /api/sessions/{id}/messages` |
+| `claude-code-java-start/src/main/java/ai/claude/code/config/AgentBeans.java` | Add `ExecutorService` bean for SSE threads |
 
 ---
 
 ## Task 1: AgentEventListener Interface
 
 **Files:**
-- Create: `claude-code-4j-service/src/main/java/ai/claude/code/core/AgentEventListener.java`
+- Create: `claude-code-java-service/src/main/java/ai/claude/code/core/AgentEventListener.java`
 
 - [ ] **Step 1: Create the interface**
 
@@ -76,7 +76,7 @@ public interface AgentEventListener {
 - [ ] **Step 2: Compile to verify no errors**
 
 ```bash
-mvn compile -pl claude-code-4j-service -q
+mvn compile -pl claude-code-java-service -q
 ```
 
 Expected: BUILD SUCCESS
@@ -84,7 +84,7 @@ Expected: BUILD SUCCESS
 - [ ] **Step 3: Commit**
 
 ```bash
-git add claude-code-4j-service/src/main/java/ai/claude/code/core/AgentEventListener.java
+git add claude-code-java-service/src/main/java/ai/claude/code/core/AgentEventListener.java
 git commit -m "feat: add AgentEventListener interface for SSE streaming"
 ```
 
@@ -93,7 +93,7 @@ git commit -m "feat: add AgentEventListener interface for SSE streaming"
 ## Task 2: OpenAiClient — createMessageStream()
 
 **Files:**
-- Modify: `claude-code-4j-service/src/main/java/ai/claude/code/core/OpenAiClient.java`
+- Modify: `claude-code-java-service/src/main/java/ai/claude/code/core/OpenAiClient.java`
 
 The existing `createMessage()` reads the full response at once. The new `createMessageStream()` must:
 1. Add `"stream": true` to request body
@@ -333,7 +333,7 @@ import ai.claude.code.core.AgentEventListener;
 - [ ] **Step 3: Compile**
 
 ```bash
-mvn compile -pl claude-code-4j-service -q
+mvn compile -pl claude-code-java-service -q
 ```
 
 Expected: BUILD SUCCESS
@@ -341,7 +341,7 @@ Expected: BUILD SUCCESS
 - [ ] **Step 4: Commit**
 
 ```bash
-git add claude-code-4j-service/src/main/java/ai/claude/code/core/OpenAiClient.java
+git add claude-code-java-service/src/main/java/ai/claude/code/core/OpenAiClient.java
 git commit -m "feat: add createMessageStream() to OpenAiClient for SSE streaming"
 ```
 
@@ -350,7 +350,7 @@ git commit -m "feat: add createMessageStream() to OpenAiClient for SSE streaming
 ## Task 3: AgentLoop — streaming run() overload
 
 **Files:**
-- Modify: `claude-code-4j-service/src/main/java/ai/claude/code/agent/AgentLoop.java`
+- Modify: `claude-code-java-service/src/main/java/ai/claude/code/agent/AgentLoop.java`
 
 The new `run(JsonArray messages, AgentEventListener listener)` overload mirrors the existing `run(JsonArray messages)` but:
 - Uses `client.createMessageStream()` instead of `client.createMessage()`
@@ -466,7 +466,7 @@ import ai.claude.code.core.AgentEventListener;
 - [ ] **Step 3: Compile**
 
 ```bash
-mvn compile -pl claude-code-4j-service -q
+mvn compile -pl claude-code-java-service -q
 ```
 
 Expected: BUILD SUCCESS
@@ -474,7 +474,7 @@ Expected: BUILD SUCCESS
 - [ ] **Step 4: Commit**
 
 ```bash
-git add claude-code-4j-service/src/main/java/ai/claude/code/agent/AgentLoop.java
+git add claude-code-java-service/src/main/java/ai/claude/code/agent/AgentLoop.java
 git commit -m "feat: add streaming run(messages, listener) overload to AgentLoop"
 ```
 
@@ -483,7 +483,7 @@ git commit -m "feat: add streaming run(messages, listener) overload to AgentLoop
 ## Task 4: SessionStore — listAll() method
 
 **Files:**
-- Modify: `claude-code-4j-service/src/main/java/ai/claude/code/capability/SessionStore.java`
+- Modify: `claude-code-java-service/src/main/java/ai/claude/code/capability/SessionStore.java`
 
 `listAll()` traverses `.sessions/*.json`, reads modification time from filesystem and extracts the first user message as `preview`.
 
@@ -543,7 +543,7 @@ public java.util.List<SessionMeta> listAll() {
 - [ ] **Step 2: Compile**
 
 ```bash
-mvn compile -pl claude-code-4j-service -q
+mvn compile -pl claude-code-java-service -q
 ```
 
 Expected: BUILD SUCCESS
@@ -551,7 +551,7 @@ Expected: BUILD SUCCESS
 - [ ] **Step 3: Commit**
 
 ```bash
-git add claude-code-4j-service/src/main/java/ai/claude/code/capability/SessionStore.java
+git add claude-code-java-service/src/main/java/ai/claude/code/capability/SessionStore.java
 git commit -m "feat: add SessionStore.listAll() for session list endpoint"
 ```
 
@@ -560,9 +560,9 @@ git commit -m "feat: add SessionStore.listAll() for session list endpoint"
 ## Task 5: StreamService + StreamController (SSE endpoint)
 
 **Files:**
-- Create: `claude-code-4j-start/src/main/java/ai/claude/code/web/service/StreamService.java`
-- Create: `claude-code-4j-start/src/main/java/ai/claude/code/web/controller/StreamController.java`
-- Modify: `claude-code-4j-start/src/main/java/ai/claude/code/config/AgentBeans.java`
+- Create: `claude-code-java-start/src/main/java/ai/claude/code/web/service/StreamService.java`
+- Create: `claude-code-java-start/src/main/java/ai/claude/code/web/controller/StreamController.java`
+- Modify: `claude-code-java-start/src/main/java/ai/claude/code/config/AgentBeans.java`
 
 `StreamService` contains the `SseAgentEventListener` inner class. It assembles a fresh per-request `AgentLoop` (shared stateless beans + per-request `TodoManager`/`ContextCompactor`) and runs it on an executor thread.
 
@@ -826,9 +826,9 @@ Expected: BUILD SUCCESS
 - [ ] **Step 5: Commit**
 
 ```bash
-git add claude-code-4j-start/src/main/java/ai/claude/code/web/service/StreamService.java
-git add claude-code-4j-start/src/main/java/ai/claude/code/web/controller/StreamController.java
-git add claude-code-4j-start/src/main/java/ai/claude/code/config/AgentBeans.java
+git add claude-code-java-start/src/main/java/ai/claude/code/web/service/StreamService.java
+git add claude-code-java-start/src/main/java/ai/claude/code/web/controller/StreamController.java
+git add claude-code-java-start/src/main/java/ai/claude/code/config/AgentBeans.java
 git commit -m "feat: add SSE streaming endpoint POST /api/chat/stream"
 ```
 
@@ -837,8 +837,8 @@ git commit -m "feat: add SSE streaming endpoint POST /api/chat/stream"
 ## Task 6: Session list endpoints
 
 **Files:**
-- Create: `claude-code-4j-start/src/main/java/ai/claude/code/web/dto/SessionMeta.java`
-- Modify: `claude-code-4j-start/src/main/java/ai/claude/code/web/controller/ChatController.java`
+- Create: `claude-code-java-start/src/main/java/ai/claude/code/web/dto/SessionMeta.java`
+- Modify: `claude-code-java-start/src/main/java/ai/claude/code/web/controller/ChatController.java`
 
 Note: `SessionStore.SessionMeta` is an inner record in the service module. The start module's `SessionMeta` DTO is a separate record for the REST layer — simpler, serializable by Jackson.
 
@@ -918,8 +918,8 @@ Expected: BUILD SUCCESS
 - [ ] **Step 4: Commit**
 
 ```bash
-git add claude-code-4j-start/src/main/java/ai/claude/code/web/dto/SessionMeta.java
-git add claude-code-4j-start/src/main/java/ai/claude/code/web/controller/ChatController.java
+git add claude-code-java-start/src/main/java/ai/claude/code/web/dto/SessionMeta.java
+git add claude-code-java-start/src/main/java/ai/claude/code/web/controller/ChatController.java
 git commit -m "feat: add GET /api/sessions and GET /api/sessions/{id}/messages endpoints"
 ```
 
@@ -928,7 +928,7 @@ git commit -m "feat: add GET /api/sessions and GET /api/sessions/{id}/messages e
 ## Task 7: Frontend — index.html (base structure + SSE client)
 
 **Files:**
-- Create: `claude-code-4j-start/src/main/resources/static/index.html`
+- Create: `claude-code-java-start/src/main/resources/static/index.html`
 
 This task creates the full single-file frontend. Design tokens come from the approved `playground-v4.html` mockup (Dark OLED + Linear indigo). The SSE client uses `EventSource` (POST via fetch + ReadableStream, since `EventSource` is GET-only).
 
@@ -936,7 +936,7 @@ This task creates the full single-file frontend. Design tokens come from the app
 
 - [ ] **Step 1: Create index.html with full CSS design system**
 
-Create `claude-code-4j-start/src/main/resources/static/index.html` using the design tokens from `playground-v4.html`:
+Create `claude-code-java-start/src/main/resources/static/index.html` using the design tokens from `playground-v4.html`:
 
 ```html
 <!DOCTYPE html>
@@ -944,7 +944,7 @@ Create `claude-code-4j-start/src/main/resources/static/index.html` using the des
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>claude-code-4j · Playground</title>
+<title>claude-code-java · Playground</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1101,7 +1101,7 @@ textarea#msgInput::placeholder{color:var(--t4)}
 <!-- Topbar -->
 <div class="topbar">
   <div class="wordmark">
-    claude-code-4j<span class="wordmark-sep">/</span><span class="wordmark-page">Playground</span>
+    claude-code-java<span class="wordmark-sep">/</span><span class="wordmark-page">Playground</span>
   </div>
   <div class="tb-divider"></div>
   <div class="model-badge">
@@ -1579,7 +1579,7 @@ loadSessionList();
 - [ ] **Step 2: Start the application and verify the page loads**
 
 ```bash
-mvn exec:java -pl claude-code-4j-start \
+mvn exec:java -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application" &
 sleep 5
 curl -s http://localhost:8080/ | head -5
@@ -1590,7 +1590,7 @@ Expected: HTML content starting with `<!DOCTYPE html>`
 - [ ] **Step 3: Commit**
 
 ```bash
-git add claude-code-4j-start/src/main/resources/static/index.html
+git add claude-code-java-start/src/main/resources/static/index.html
 git commit -m "feat: add Web Playground frontend (index.html)"
 ```
 
@@ -1611,7 +1611,7 @@ Expected: BUILD SUCCESS
 - [ ] **Step 2: Start the application**
 
 ```bash
-mvn exec:java -pl claude-code-4j-start \
+mvn exec:java -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application" 2>&1 &
 sleep 8
 ```
@@ -1658,7 +1658,7 @@ Open `http://localhost:8080/` in a browser. Verify:
 - [ ] **Step 6: Kill the test server**
 
 ```bash
-pkill -f "claude-code-4j-start" 2>/dev/null; true
+pkill -f "claude-code-java-start" 2>/dev/null; true
 ```
 
 - [ ] **Step 7: Commit any fixes found during testing**
@@ -1673,7 +1673,7 @@ git commit -m "fix: integration issues found during smoke test"
 ## Task 9: Final polish — error handling and responsive layout
 
 **Files:**
-- Modify: `claude-code-4j-start/src/main/resources/static/index.html`
+- Modify: `claude-code-java-start/src/main/resources/static/index.html`
 
 Verify and finalize:
 - Error banner shows correctly on 3 failed retries
@@ -1699,7 +1699,7 @@ async function initModelName() {
   try {
     const res = await fetch('/actuator/health');
     if (res.ok) {
-      document.getElementById('modelName').textContent = 'claude-code-4j';
+      document.getElementById('modelName').textContent = 'claude-code-java';
     }
   } catch { /* ignore */ }
 }
@@ -1714,7 +1714,7 @@ The frontend and API share the same origin (Spring Boot serves both), so CORS is
 
 ```bash
 mvn compile -q
-git add claude-code-4j-start/src/main/resources/static/index.html
+git add claude-code-java-start/src/main/resources/static/index.html
 git commit -m "polish: responsive layout and model name display for Web Playground"
 ```
 
