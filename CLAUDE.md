@@ -256,6 +256,35 @@ let hasAutoOpenedDrawer      // 首次 team_tool_start 自动开抽屉后置 tru
 
 ## 开发规范
 
+### Wiki 沉淀（必须执行）
+
+**凡是涉及 Plan（规划）、Brainstorm（头脑风暴）、Spec（需求规格）、Design（设计方案）的内容，必须以 Markdown 文件的形式保存到 `docs/` 目录，作为 Wiki 永久沉淀。**
+
+规则：
+- **触发时机**：一旦对话中出现方案设计、需求分析、架构决策、接口设计等内容，立即整理输出为文档
+- **文件命名**：`docs/{type}-{topic}.md`，type = `plan` / `spec` / `design` / `adr`（Architecture Decision Record）
+  - 示例：`docs/design-sse-event-pipeline.md`、`docs/spec-agent-team-api.md`、`docs/adr-session-store-naming.md`
+- **文件内容要求**：
+  - 背景（Context）：为什么要做这个
+  - 目标（Goal）：要解决什么问题
+  - 方案（Solution）：核心设计或决策
+  - 关键约束（Constraints）：已知限制或不可逾越的边界
+  - 待定项（Open Questions）：尚未确定的问题（如有）
+- **不可跳过**：即使是口头讨论过的设计，也要整理成文字落地
+- **与 Changelog 的关系**：文档创建/更新后，在 Changelog 中同步记录文件路径
+
+**`docs/` 目录结构约定**：
+```
+docs/
+├── CHANGELOG.md      — 版本变更记录（必填）
+├── TESTING.md        — 测试场景报告
+├── design-*.md       — 设计文档
+├── spec-*.md         — 需求规格文档
+├── plan-*.md         — 规划/迭代计划文档
+├── adr-*.md          — 架构决策记录
+└── study/            — 教学/展示页面
+```
+
 ### Changelog 维护（必须执行）
 
 **每次对代码或文档进行任何修改后，必须在 `docs/CHANGELOG.md` 中追加新版本条目**，然后再提交代码。格式：

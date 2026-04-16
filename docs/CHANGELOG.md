@@ -5,6 +5,22 @@ Each version corresponds to one conversation iteration.
 
 ---
 
+## v0.18 — 2026-04-16
+
+### 需求
+> CLAUDE.md 作为 SDD 规范文件，凡是涉及 plan、brainstorm、spec、design 的内容，应在 docs 目录下沉淀为 wiki 文档
+
+### 变更
+
+#### `CLAUDE.md`（开发规范）
+- 新增 **Wiki 沉淀** 章节（置于 Changelog 维护之前）
+- 触发规则：plan / brainstorm / spec / design 类内容必须保存为 `docs/` 下的 Markdown 文件
+- 文件命名规范：`docs/{type}-{topic}.md`（type = plan / spec / design / adr）
+- 文件内容模板：背景 / 目标 / 方案 / 关键约束 / 待定项五节
+- `docs/` 目录结构约定：各类文档的子目录/前缀规则
+
+---
+
 ## v0.17 — 2026-04-16
 
 ### 需求
