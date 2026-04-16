@@ -1,4 +1,4 @@
-# Changelog — claude-code-4j
+# Changelog — claude-code-java
 
 每个版本对应一次对话迭代，记录用户需求和实际改动。
 Each version corresponds to one conversation iteration.
@@ -357,8 +357,8 @@ Each version corresponds to one conversation iteration.
 
 ### 变更
 - 项目初始化（见 commit `feat(init)`）
-- `claude-code-4j-service`：AgentLoop、AgentAssembler、工具体系（FileTools、TodoTool、CompactTool 等）
-- `claude-code-4j-start`：Spring Boot 入口、CLI REPL、REST API (`/api/chat`、`/api/chat/stream`)
+- `claude-code-java-service`：AgentLoop、AgentAssembler、工具体系（FileTools、TodoTool、CompactTool 等）
+- `claude-code-java-start`：Spring Boot 入口、CLI REPL、REST API (`/api/chat`、`/api/chat/stream`)
 - TeammateRunner + TeammateLoop：Agent Teams 支持
 - SessionStore：会话持久化（`.sessions/` 目录）
 - ContextCompactor：三层压缩（microCompact、auto-compact、model-triggered compact）

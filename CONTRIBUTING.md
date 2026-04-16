@@ -10,7 +10,7 @@ Thank you for considering contributing to this project!
 如果你发现了 bug 或有功能建议，请：
 If you find a bug or have a feature suggestion:
 
-1. 在 [Issues](https://github.com/fluentlc/claude-code-4j/issues) 中搜索是否已有相关问题
+1. 在 [Issues](https://github.com/fluentlc/claude-code-java/issues) 中搜索是否已有相关问题
 2. 如果没有，创建新的 Issue，详细描述问题或建议
 
 ### 提交代码 / Submit Code
@@ -25,7 +25,7 @@ If you find a bug or have a feature suggestion:
 ### 代码规范 / Code Style
 
 - **Java 17** — 项目最低要求 Java 17，可使用 records、var、text blocks 等现代特性
-- **模块归属** — 纯业务逻辑和工具放 `claude-code-4j-service`，Spring 相关代码放 `claude-code-4j-start`
+- **模块归属** — 纯业务逻辑和工具放 `claude-code-java-service`，Spring 相关代码放 `claude-code-java-start`
 - **注释** — 重要代码保持中英双语注释，便于国际协作
 - **依赖** — service 模块不引入 Spring，保持框架无关性
 - **编译验证** — 提交前运行 `mvn compile` 确认两个子模块均能编译通过
@@ -36,7 +36,7 @@ If you find a bug or have a feature suggestion:
 
 ### 扩展新工具 / Add New Tools
 
-1. 在 `claude-code-4j-service` 中新建实现 `ToolProvider` 接口的类
+1. 在 `claude-code-java-service` 中新建实现 `ToolProvider` 接口的类
 2. 在 `AgentAssembler.buildProviders()` 中加一行注册
 3. 运行 `mvn compile` 验证
 
@@ -75,7 +75,7 @@ case 'tool_progress': {
 
 ### 扩展 Web Playground / Extend the Web Playground
 
-Web Playground 是单文件 SPA（`claude-code-4j-start/src/main/resources/static/index.html`），采用 Linear 设计语言，无构建步骤。
+Web Playground 是单文件 SPA（`claude-code-java-start/src/main/resources/static/index.html`），采用 Linear 设计语言，无构建步骤。
 
 **关键函数说明：**
 

@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>ai.claude.code</groupId>
-    <artifactId>claude-code-4j</artifactId>
+    <artifactId>claude-code-java</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>claude-code-4j</name>
+    <name>claude-code-java</name>
     <description>Open-source Java 17 AI Agent Harness — CLI + REST API, extensible ToolProvider architecture</description>
-    <url>https://github.com/fluentlc/claude-code-4j</url>
+    <url>https://github.com/fluentlc/claude-code-java</url>
 
     <licenses>
         <license>
@@ -30,14 +30,14 @@
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/fluentlc/claude-code-4j.git</connection>
-        <developerConnection>scm:git:ssh://github.com:fluentlc/claude-code-4j.git</developerConnection>
-        <url>https://github.com/fluentlc/claude-code-4j</url>
+        <connection>scm:git:git://github.com/fluentlc/claude-code-java.git</connection>
+        <developerConnection>scm:git:ssh://github.com:fluentlc/claude-code-java.git</developerConnection>
+        <url>https://github.com/fluentlc/claude-code-java</url>
     </scm>
 
     <modules>
-        <module>claude-code-4j-service</module>
-        <module>claude-code-4j-start</module>
+        <module>claude-code-java-service</module>
+        <module>claude-code-java-start</module>
     </modules>
 
     <properties>
@@ -63,7 +63,7 @@
             <!-- Internal modules -->
             <dependency>
                 <groupId>ai.claude.code</groupId>
-                <artifactId>claude-code-4j-service</artifactId>
+                <artifactId>claude-code-java-service</artifactId>
                 <version>${project.version}</version>
             </dependency>
 

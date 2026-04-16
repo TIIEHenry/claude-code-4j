@@ -4,17 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## 项目概述
 
-**claude-code-4j** 是一个可嵌入任何 Java 应用的 AI Agent 引擎，支持 CLI 和 REST API 两种交互方式。
+**claude-code-java** 是一个可嵌入任何 Java 应用的 AI Agent 引擎，支持 CLI 和 REST API 两种交互方式。
 
 **模块结构**：
-- `claude-code-4j-service` — 纯 Java 17 库，包含所有 Agent 能力，无框架依赖
-- `claude-code-4j-start` — Spring Boot 3.2 应用层，提供 CLI REPL 和 REST API
+- `claude-code-java-service` — 纯 Java 17 库，包含所有 Agent 能力，无框架依赖
+- `claude-code-java-start` — Spring Boot 3.2 应用层，提供 CLI REPL 和 REST API
 
 ## 构建与运行
 
 **配置**（首次运行前必须完成）：
 ```bash
-# 编辑 claude-code-4j-start/src/main/resources/claude.properties
+# 编辑 claude-code-java-start/src/main/resources/claude.properties
 # 将 OPENAI_API_KEY=your_api_key_here 替换为真实的 API Key
 # 或设置环境变量：export OPENAI_API_KEY=<your-key>
 ```
@@ -26,14 +26,14 @@ mvn compile
 
 **CLI 交互模式**（REPL）：
 ```bash
-mvn exec:java -pl claude-code-4j-start \
+mvn exec:java -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application" \
   -Dspring.profiles.active=cli
 ```
 
 **REST API 模式**（端口 8080）：
 ```bash
-mvn exec:java -pl claude-code-4j-start \
+mvn exec:java -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application"
 
 # 调用 API
@@ -50,8 +50,8 @@ curl -X POST http://localhost:8080/api/chat \
 
 | 模块 | 定位 | 特征 |
 |------|------|------|
-| `claude-code-4j-service` | 纯 Java 17 库 | 无框架依赖，可被任何 Java 项目引用 |
-| `claude-code-4j-start` | Spring Boot 3.2 应用 | 提供 CLI + REST API 两种交互方式 |
+| `claude-code-java-service` | 纯 Java 17 库 | 无框架依赖，可被任何 Java 项目引用 |
+| `claude-code-java-start` | Spring Boot 3.2 应用 | 提供 CLI + REST API 两种交互方式 |
 
 ### service 模块包结构
 
@@ -113,7 +113,7 @@ src/main/java/ai/claude/code/
 
 ### 配置文件
 
-`claude-code-4j-start/src/main/resources/claude.properties`（已纳入版本控制，API Key 为占位符）：
+`claude-code-java-start/src/main/resources/claude.properties`（已纳入版本控制，API Key 为占位符）：
 - `OPENAI_API_KEY` — OpenAI 协议 API 密钥（必填，或通过环境变量设置）
 - `OPENAI_BASE_URL` — 服务地址，默认 `https://api.openai.com`
 - `OPENAI_MODEL_ID` — 模型 ID，如 `gpt-4o`

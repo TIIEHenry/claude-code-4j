@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>claude-code-4j — Java AI Agent Harness</title>
+<title>claude-code-java — Java AI Agent Harness</title>
 <style>
   :root {
     --bg:        #0d1117;
@@ -95,7 +95,7 @@
   <p class="subtitle">可嵌入任何 Java 应用的 AI Agent 引擎<br>
     Embeddable AI Agent Harness for Java — CLI &amp; REST API</p>
   <div class="hero-buttons">
-    <a href="https://github.com/fluentlc/claude-code-4j" class="btn btn-primary">GitHub →</a>
+    <a href="https://github.com/fluentlc/claude-code-java" class="btn btn-primary">GitHub →</a>
     <a href="api.html" class="btn btn-outline">REST API 文档</a>
   </div>
 </div>
@@ -239,7 +239,7 @@
   <div class="qs-grid">
     <div class="qs-card">
       <h3>1. 配置 API Key</h3>
-      <p>编辑 <code>claude-code-4j-start/src/main/resources/claude.properties</code>，填入 API Key：</p>
+      <p>编辑 <code>claude-code-java-start/src/main/resources/claude.properties</code>，填入 API Key：</p>
       <pre><code>OPENAI_API_KEY=sk-xxxxxxxx
 OPENAI_BASE_URL=https://api.openai.com
 OPENAI_MODEL_ID=gpt-4o</code></pre>
@@ -254,7 +254,7 @@ mvn compile
 
 # 启动 CLI（REPL）
 mvn exec:java \
-  -pl claude-code-4j-start \
+  -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application" \
   -Dspring.profiles.active=cli</code></pre>
     </div>
@@ -263,7 +263,7 @@ mvn exec:java \
       <p>启动 HTTP 服务器（默认端口 8080）：</p>
       <pre><code># 启动 REST 服务器
 mvn exec:java \
-  -pl claude-code-4j-start \
+  -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application"
 
 # 调用 API
@@ -326,8 +326,8 @@ list_teammates()
 </section>
 
 <footer>
-  claude-code-4j &nbsp;·&nbsp; MIT License &nbsp;·&nbsp;
-  <a href="https://github.com/fluentlc/claude-code-4j">GitHub</a> &nbsp;·&nbsp;
+  claude-code-java &nbsp;·&nbsp; MIT License &nbsp;·&nbsp;
+  <a href="https://github.com/fluentlc/claude-code-java">GitHub</a> &nbsp;·&nbsp;
   <a href="api.html">REST API 文档</a>
 </footer>
 

@@ -1,4 +1,4 @@
-# claude-code-4j — 核心场景测试报告
+# claude-code-java — 核心场景测试报告
 
 > **测试环境**：Java 17、Maven 3.9、DashScope qwen3-plus（OpenAI 兼容协议）
 > **运行方式**：见各场景"触发方式"，通用启动命令附于文末
@@ -551,7 +551,7 @@ You> 请创建两个 Teammate：
 
 ```bash
 # 启动服务
-mvn exec:java -pl claude-code-4j-start \
+mvn exec:java -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application"
 
 # 访问 http://localhost:8080
@@ -677,7 +677,7 @@ data: {}
 
 ```bash
 # 1. 配置 API Key
-#    编辑 claude-code-4j-start/src/main/resources/claude.properties
+#    编辑 claude-code-java-start/src/main/resources/claude.properties
 #    或设置环境变量：
 export OPENAI_API_KEY=sk-xxxxxxxx
 
@@ -686,7 +686,7 @@ mvn compile
 
 # 3. 启动 CLI
 mvn exec:java \
-  -pl claude-code-4j-start \
+  -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application" \
   -Dspring.profiles.active=cli
 ```
@@ -695,7 +695,7 @@ mvn exec:java \
 
 ```bash
 mvn exec:java \
-  -pl claude-code-4j-start \
+  -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application"
 
 # 验证 Agent Teams（通过 API）

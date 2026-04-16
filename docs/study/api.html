@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>REST API 文档 — claude-code-4j</title>
+<title>REST API 文档 — claude-code-java</title>
 <style>
   :root {
     --bg:        #0d1117;
@@ -77,7 +77,7 @@
 
 <div class="hero">
   <div class="badge">REST API Reference</div>
-  <h1><span>claude-code-4j</span> REST API</h1>
+  <h1><span>claude-code-java</span> REST API</h1>
   <p class="subtitle">Spring Boot 3.2 · OpenAPI-friendly · 会话持久化</p>
   <a href="index.html" class="back">← 返回项目主页</a>
 </div>
@@ -88,7 +88,7 @@
   <h2>Base URL</h2>
   <pre><code>http://localhost:8080</code></pre>
   <p>启动方式：</p>
-  <pre><code>mvn exec:java -pl claude-code-4j-start \
+  <pre><code>mvn exec:java -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application"</code></pre>
   <p>健康检查：</p>
   <pre><code>curl http://localhost:8080/actuator/health
@@ -217,19 +217,19 @@ curl -X POST http://localhost:8080/api/chat \
 
   <!-- ═══ CONFIGURATION ═══ -->
   <h2>服务器配置</h2>
-  <p>通过 <code>claude-code-4j-start/src/main/resources/application.properties</code> 修改：</p>
+  <p>通过 <code>claude-code-java-start/src/main/resources/application.properties</code> 修改：</p>
   <pre><code>server.port=8080                    # 监听端口
-spring.application.name=claude-code-4j</code></pre>
+spring.application.name=claude-code-java</code></pre>
   <p>也可通过命令行参数覆盖：</p>
-  <pre><code>mvn exec:java -pl claude-code-4j-start \
+  <pre><code>mvn exec:java -pl claude-code-java-start \
   -Dexec.mainClass="ai.claude.code.Application" \
   -Dserver.port=9090</code></pre>
 
 </main>
 
 <footer>
-  claude-code-4j &nbsp;·&nbsp; MIT License &nbsp;·&nbsp;
-  <a href="https://github.com/fluentlc/claude-code-4j">GitHub</a> &nbsp;·&nbsp;
+  claude-code-java &nbsp;·&nbsp; MIT License &nbsp;·&nbsp;
+  <a href="https://github.com/fluentlc/claude-code-java">GitHub</a> &nbsp;·&nbsp;
   <a href="index.html">项目主页</a>
 </footer>
 
